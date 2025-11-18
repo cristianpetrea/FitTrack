@@ -10,9 +10,7 @@ import com.fittrack.model.subscription.Subscription;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -50,10 +48,10 @@ public class User {
     private UserRole role=UserRole.MEMBER;
 
     @Column(name="created_at",updatable = false)
-    private LocalDateTime createdAt=LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(name="updated_at")
-    private LocalDateTime updatedAt=LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<Subscription> subscription= new HashSet<>();
@@ -83,6 +81,10 @@ public class User {
         this.updatedAt=LocalDateTime.now();
     }
 
-
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
 
 }
