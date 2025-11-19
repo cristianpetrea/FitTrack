@@ -2,6 +2,7 @@ package com.fittrack.controller.user;
 
 import com.fittrack.dto.user.input.LoginRequest;
 import com.fittrack.dto.user.input.UserRegisterRequest;
+import com.fittrack.dto.user.input.UserUpdateRequest;
 import com.fittrack.dto.user.output.LoginResponse;
 import com.fittrack.dto.user.output.UserResponse;
 import com.fittrack.service.user.AuthService;
@@ -42,5 +43,15 @@ public class UserController {
         UserResponse response = userService.getUserProfileByEmail(email);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/updateUser")
+    public ResponseEntity<UserResponse> updateUser(@RequestBody UserUpdateRequest request, Authentication authentication){
+        String email=authentication.getName();
+
+        UserResponse response=userService.updateUserProfile(email,request);
+
+        return ResponseEntity.ok(response);
+
     }
 }
